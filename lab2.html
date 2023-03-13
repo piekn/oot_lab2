@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Restaurant Bill Calculator</title>
+</head>
+<body>
+  <h1>Restaurant Bill Calculator</h1>
+
+  <p>Enter the cost of your meal:</p>
+  <input type="text" id="mealCost" value="10">
+
+  <p>Choose your tip percentage:</p>
+  <select id="tipPercentage">
+    <option value="0.1">10%</option>
+    <option value="0.15">15%</option>
+    <option value="0.2">20%</option>
+  </select>
+
+  <button id="calculateBtn">Calculate Bill</button>
+
+  <p>Your total bill is: <span id="totalBill"></span></p>
+
+  <script>
+    // Define the base bill object using the Prototype pattern
+    var BaseBill = function(mealCost, tipPercentage) {
+      this.mealCost = mealCost;
+      this.tipPercentage = tipPercentage;
+    };
+
+    BaseBill.prototype.calculateTotalBill = function() {
+      // Calculate the total bill by adding the meal cost and tip
+      var tipAmount = this.mealCost * this.tipPercentage;
+      return this.mealCost + tipAmount;
+    };
+
+    BaseBill.prototype.clone = function() {
+      // Create a new bill object with the same meal cost and tip percentage
+      return new BaseBill(this.mealCost, this.tipPercentage);
+    };
+
+    // Create an instance of the base bill object
+    var baseBill = new BaseBill(10, 0.1);
+
+    // Add the base bill object to the HTML page
+    document.getElementById("totalBill").textContent = baseBill.calculateTotalBill();
+
+    // Handle user interaction
+    document.getElementById("calculateBtn").addEventListener("click", function() {
+      // Clone the base bill object to create a new instance
+      var clonedBill = baseBill.clone();
+
+      // Update the properties of the cloned bill object based on user input
+      var mealCost = parseFloat(document.getElementById("mealCost").value);
+      var tipPercentage = parseFloat(document.getElementById("tipPercentage").value);
+      clonedBill.mealCost = mealCost;
+      clonedBill.tipPercentage = tipPercentage;
+
+      // Update the total bill on the HTML page
+      document.getElementById("totalBill").textContent = clonedBill.calculateTotalBill();
+    });
+  </script>
+</body>
+</html>
